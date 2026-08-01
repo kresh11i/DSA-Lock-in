@@ -175,6 +175,152 @@ matrix[i][right] = temp2;
 
 Reversing each row completes the 90° clockwise rotation.
 
+## 🔍 Understanding the Transpose
+
+### What is Transpose?
+
+Transpose means converting **rows into columns**.
+
+For every element above the main diagonal, we swap it with its corresponding element below the diagonal.
+
+Example:
+
+Original Matrix
+
+```text
+1 2 3
+4 5 6
+7 8 9
+```
+
+After Transpose
+
+```text
+1 4 7
+2 5 8
+3 6 9
+```
+
+---
+
+### Why do we start with `j = i + 1`?
+
+```java
+for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+        swap(matrix[i][j], matrix[j][i]);
+    }
+}
+```
+
+The main diagonal elements never change.
+
+```text
+★ = Main Diagonal
+
+★ 2 3
+4 ★ 6
+7 8 ★
+```
+
+We only need to swap the elements **above the diagonal**.
+
+---
+
+### What happens if `j = 0`?
+
+Suppose we have
+
+```text
+1 2
+3 4
+```
+
+When `i = 0`
+
+```text
+Swap (0,1) ↔ (1,0)
+
+1 3
+2 4
+```
+
+Looks correct.
+
+But when `i = 1`
+
+```text
+Swap (1,0) ↔ (0,1)
+```
+
+It swaps the same elements **again**.
+
+```text
+1 2
+3 4
+```
+
+The transpose gets undone.
+
+So every pair gets swapped **twice**, giving the original matrix back.
+
+---
+
+### Why `j = i + 1`?
+
+Starting from
+
+```java
+j = i + 1;
+```
+
+means:
+
+- Skip the main diagonal.
+- Only visit the upper triangle.
+- Every pair is swapped exactly **once**.
+- No duplicate swaps.
+
+---
+
+### Visualization
+
+```text
+Matrix
+
+★ X X
+X ★ X
+X X ★
+
+Legend
+
+★ = Ignore
+X = Swap
+```
+
+We only traverse the highlighted upper half.
+
+---
+
+### Interview Takeaway
+
+Whenever you write transpose:
+
+```java
+for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+        // swap
+    }
+}
+```
+
+Immediately remember:
+
+- `i` → current row
+- `j = i + 1` → start after the diagonal
+- Every pair is swapped only once
+- Prevents undoing previous swaps
+
 > **Interview Takeaway:**  
 > Whenever you are asked to rotate a matrix by **90° clockwise**, immediately think:
 
